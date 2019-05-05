@@ -1,5 +1,10 @@
 package patmat
 
+<<<<<<< HEAD
+=======
+import common._
+
+>>>>>>> 807bec66856cba93ad332da778b8e26dc170c499
 /**
  * Assignment 4: Huffman coding
  *
@@ -88,7 +93,11 @@ object Huffman {
    */
     def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = freqs match {
       case List() => List()
+<<<<<<< HEAD
       case x :: xs => insert(Leaf(x._1, x._2), makeOrderedLeafList(xs))
+=======
+      case x :: xs => insert(new Leaf(x._1, x._2), makeOrderedLeafList(xs))
+>>>>>>> 807bec66856cba93ad332da778b8e26dc170c499
     }
 
     def insert[T <: CodeTree](x: T, xs: List[T]): List[T] = xs match {
@@ -116,7 +125,11 @@ object Huffman {
     def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
       case List() => List()
       case x :: Nil => List(x)
+<<<<<<< HEAD
       case x :: xs => insert(Fork(x, xs.head, chars(x) ::: chars(xs.head),
+=======
+      case x :: xs => insert(new Fork(x, xs.head, chars(x) ::: chars(xs.head),
+>>>>>>> 807bec66856cba93ad332da778b8e26dc170c499
         weight(x) + weight(xs.head)), xs.tail)
     }
   
@@ -219,7 +232,7 @@ object Huffman {
       case List() => List()
       case x :: xs => if (x._1 == char) x._2 else codeBits(xs)(char)
     }
-  
+
   /**
    * Given a code tree, create a code table which contains, for every character in the
    * code tree, the sequence of bits representing that character.
@@ -236,13 +249,14 @@ object Huffman {
 
       convertChar(tree)
     }
-  
+
   /**
    * This function takes two code tables and merges them into one. Depending on how you
    * use it in the `convert` method above, this merge method might also do some transformations
    * on the two parameter code tables.
    */
     def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = a ::: b
+
   /**
    * This function encodes `text` according to the code tree `tree`.
    *
