@@ -1,10 +1,5 @@
 package patmat
 
-<<<<<<< HEAD
-=======
-import common._
-
->>>>>>> 807bec66856cba93ad332da778b8e26dc170c499
 /**
  * Assignment 4: Huffman coding
  *
@@ -93,11 +88,7 @@ object Huffman {
    */
     def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = freqs match {
       case List() => List()
-<<<<<<< HEAD
       case x :: xs => insert(Leaf(x._1, x._2), makeOrderedLeafList(xs))
-=======
-      case x :: xs => insert(new Leaf(x._1, x._2), makeOrderedLeafList(xs))
->>>>>>> 807bec66856cba93ad332da778b8e26dc170c499
     }
 
     def insert[T <: CodeTree](x: T, xs: List[T]): List[T] = xs match {
@@ -125,11 +116,7 @@ object Huffman {
     def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
       case List() => List()
       case x :: Nil => List(x)
-<<<<<<< HEAD
       case x :: xs => insert(Fork(x, xs.head, chars(x) ::: chars(xs.head),
-=======
-      case x :: xs => insert(new Fork(x, xs.head, chars(x) ::: chars(xs.head),
->>>>>>> 807bec66856cba93ad332da778b8e26dc170c499
         weight(x) + weight(xs.head)), xs.tail)
     }
   
