@@ -56,7 +56,7 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-    def union(that: TweetSet): TweetSet
+    def union(that: TweetSet): TweetSet = filterAcc((t: Tweet) => true, that)
   
   /**
    * Returns the tweet from this set which has the greatest retweet count.
@@ -111,17 +111,10 @@ abstract class TweetSet {
     * This method returns a boolean value telling us whether a TweetSet is emtpy
     */
   def isEmpty: Boolean
-
-  /**
-    * This method returns a element in it
-    */
-  def head: Tweet
 }
 
 class Empty extends TweetSet {
     def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc
-
-    def union(that: TweetSet): TweetSet = that
 
     def mostRetweeted: Tweet = throw new NoSuchElementException
 
@@ -129,8 +122,6 @@ class Empty extends TweetSet {
 
     def isEmpty = true
 
-    def head = new Tweet("", "", -1)
-  
   /**
    * The following methods are already implemented
    */
@@ -150,35 +141,17 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
       if (p(elem)) right.filterAcc(p, left.filterAcc(p, acc incl elem))
       else right.filterAcc(p, left.filterAcc(p, acc))
 
-    def union(that: TweetSet): TweetSet =
-      new NonEmpty(elem, left union that.filter((t: Tweet) => t.text < elem.text),
-        right union that.filter((t: Tweet) => t.text > elem.text))
-
     def mostRetweeted: Tweet = {
-      def select(tweets: TweetSet): Tweet = {
-        val filteredSet = tweets.filter((t: Tweet) => (t.retweets > tweets.head.retweets))
-        if (filteredSet.isEmpty) tweets.head
-        else select(filteredSet)
-      }
-
-      select(this)
+      val filteredSet = remove(elem).filter((t: Tweet) => t.retweets > elem.retweets)
+      if (filteredSet.isEmpty) elem else filteredSet.mostRetweeted
     }
 
     def descendingByRetweet: TweetList = {
-      def appendToList(tweets: TweetSet, acc: TweetList): TweetList = {
-        if (tweets.isEmpty) acc
-        else {
-          val tweet = tweets.mostRetweeted
-          new Cons(tweet, appendToList(tweets.remove(tweet), acc))
-        }
-      }
-
-      appendToList(this, Nil)
+      val tweet = mostRetweeted
+      new Cons(tweet, remove(tweet).descendingByRetweet)
     }
 
     def isEmpty = false
-
-    def head = elem
 
   /**
    * The following methods are already implemented
