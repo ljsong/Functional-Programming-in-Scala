@@ -1,10 +1,16 @@
 package week9
 
-class BankAccount {
-  private var balance = 0
+import week10.Publisher
+
+class BankAccount extends Publisher {
+  val balance = Var(0)
+
+  def currentBalance: Int = balance
 
   def deposit(amount: Int) = {
-    if (amount > 0) balance = balance + amount
+    if (amount > 0) {
+      balance = balance + amount
+    }
   }
 
   def withdraw(amount: Int) = {
